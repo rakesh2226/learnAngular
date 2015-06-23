@@ -1,0 +1,55 @@
+<html>
+<head>
+	<style type="text/css">
+  body{font:14px verdana;text-indent: 55px}
+  .sml{color:red;}
+
+	</style>
+ <script type="text/javascript" src="angular.min.js"></script>
+ <script type="text/javascript">
+
+var app = angular.module("app", [])
+.controller("appctrl", function($scope,$element) {
+    // appctrl = $scope;
+    $scope.bhol = true;
+    $scope.callHome = function(msg) {
+      $scope.bhol = !$scope.bhol;
+    };
+  })
+.controller("pagerCtrl", function($scope) {
+    // appctrl = $scope;
+
+    $scope.callHome = function() {
+    alert("pager");
+    };
+  })
+.directive("phone", function() {
+    return {
+      restrict:'EA',
+        scope:{
+        	call:"&",
+          bhol:"=",
+          use:'@',
+          msg:"@"
+        },
+        template:'<div ng-class="{sml:bhol}">Call     me..! {{bhol}} \n {{use}} {{msg}}</div>',
+    };
+});
+
+</script>
+</head>
+<body ng-app="app"> 
+
+  <div>
+    <div ng-controller="pagerCtrl">
+      <phone bhol="bhol" msg = "phone is configured" use ="siva"call="callHome()"></phone>
+        <input type="button" value="go" ng-model="dummy" ng-click="callHome()">
+
+  </div>
+    <div ng-controller="appctrl">
+        <input type="button" value="go" ng-model="dummy" ng-click="callHome()">
+        <div phone bhol="bhol" call="callHome()"></div>
+    </div>
+  </div>
+</body>
+</html>
