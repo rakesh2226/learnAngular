@@ -1,0 +1,32 @@
+<html>
+<head>
+  <title>communicating between controllers</title>
+  <style type="text/css">
+  body{font:14px verdana;text-indent: 55px}
+  </style>
+   <script type="text/javascript" src="angular.min.js"></script>
+ <script type="text/javascript">
+
+var app = angular.module("app", []);
+app.controller('ctrl', ['$scope','$rootScope','$timeout', function($scope,$rootScope, $timeout){
+  $scope.name = "siva";
+  $timeout(function() {
+    $rootScope.$broadcast("shh",{loc:'sbc'}); 
+    console.log("broadcast...")   
+  }, 3000);
+}]);
+app.controller('ctrl2', ['$scope','$rootScope','$timeout', function($scope,$rootScope, $timeout){
+  $scope.name = "siva";
+ $scope.$on('shh',function(e,val){
+  $scope.name = val.loc
+ });
+  
+}])
+
+</script>
+</head>
+<body ng-app="app">
+  <div ng-controller="ctrl2">{{name}} </div>
+  <div ng-controller="ctrl">{{name}} </div>
+</body>
+</html>
