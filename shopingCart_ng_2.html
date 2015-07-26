@@ -1,0 +1,90 @@
+<html>
+<head>
+	<style type="text/css">
+  body{font:12px arial;text-indent: 55px}
+  .box{padding:10px 15px 10px;font:14px arial;width: 300px;border-radius: 5px; border:1px solid green;}
+  ul{cursor: pointer;list-style: none}
+	.sml{font:12px verdana;color:'ash';}
+  .itm{font:14px arial;color:rgb(113, 123, 123);}
+  .prc{font:10px;}
+	</style>
+ <script type="text/javascript" src="angular.min.js"></script>
+ <script type="text/javascript">
+
+var app = angular.module("app",[]);
+app.factory('getSrv', ['$http', function($http){
+	return{
+		fruits: [{Name:'Apple',price:10},{Name:'Banana',price:5},{Name:'Carrot',price:2},{Name:'Grapes',price:5}],
+		snacks: [{Name:'Chips',price:5},{Name:'biscuts',price:8},{Name:'cake',price:15},{Name:'choc',price:25}]
+	}
+}]);
+
+app.filter('rnd',function(){
+  return function(amt){
+    return " Rs "+Math.ceil(amt);
+  }
+});
+
+app.directive("tab",function(){
+  return{
+    restrict:"E",
+    replace:true,
+    transclude:true,
+    template:'<div class="box">'+  
+              "<h3 style='text-align=center'>The www.oneShop.com</h3>"+
+              '<div  ng-transclude></div>'      +
+              "<div>Items in Basket:{{arr.length}}</div>"+
+              "<div class='prc'>Total price of Basket:{{amt}}</div>",
+    controller:function($scope){
+      $scope.arr = [];
+      $scope.amt = 0;
+      this.pump = function(val){
+        $scope.arr.push(val);
+      };
+      this.calc = function(){
+       $scope.amt=0;
+        angular.forEach($scope.arr,function(val,i){
+            $scope.amt += val.price;
+        })
+      };
+    }
+  }
+});
+app.directive("pane",function(getSrv){
+  return{
+    restrict:"E",
+    replace:true,
+    transclude:true,
+    scope:true,
+    require:'^tab',
+    template:"<div  class='tab'>"
+              +"<ul><li  class = 'itm' ng-repeat='data in datas'><a ng-click='addTocart(data)'>{{data.Name}}<span class='sml'> Each Rs:</span>{{data.price}}</li></ul>"
+              +"<div ng-transclude>"
+            +"</div></div>",
+    link:function(s,e,a,tabCtrl,tans){
+      // s.datas = getSrv.fruits;
+      s.datas = JSON.parse(a.datas);
+      console.log(s.$id);
+      var k = 0;    
+       s.addTocart = function(obj){
+        tabCtrl.pump(obj);
+        tabCtrl.calc();
+      };
+        
+    }
+  }
+});
+app.controller('ctrl', ['$scope','getSrv', function(a,getSrv){
+	a.snacks = getSrv.snacks;
+	a.fruits = getSrv.fruits;
+}])
+
+</script>
+</head>
+<body ng-app="app" ng-controller="ctrl"> 
+<tab>
+  <pane datas="{{fruits}}"></pane>
+  <pane datas="{{snacks}}"></pane>
+</tab>
+</body>
+</html>
