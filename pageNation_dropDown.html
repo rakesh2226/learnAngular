@@ -1,0 +1,57 @@
+index.html
+--
+<html >
+<head>
+<script type="text/javascript" src=".\Jslib\angular.min.1.4.js"></script>
+<script type="text/javascript" src=".\Jslib\jquery.min.js"></script>
+<script type="text/javascript" src=".\Jslib\jquery-ui.custom.js"></script>
+<style>
+.go{color:red;}
+#box2{margin: 0px 50px;}
+.circ{width:50px;height: 50px;background-color: orange;border-radius: 25px;position: absolute;}
+</style>
+<script type="text/javascript">
+var app = angular.module("app",[]);
+app.controller('ctrl', ['$scope','$interval','$rootScope',function(a,b,c){
+  a.arr = [];
+  a.datas;
+  for(var j=0;j<100;j++){a.arr.push({'id':j})}
+  a.pCnt = [];
+for(var i=0;i<Math.ceil(a.arr.length/5);i++){
+       a.pCnt.push(i);      
+     }
+
+ 
+ a.$watch('sel',function(n,o){
+    console.log("$watch::",n.id);
+    displayData(parseInt(n));
+  });
+  function displayData (index) {
+    var offset=5,rnd;
+    //for(var i=0,pCnt=Math.ceil(arr.length/max);i<pCnt;i++){
+     rnd = offset*index;
+     a.datas= [];
+     var d = a.arr.slice(rnd,rnd+offset);
+     for(var i=0;i<d.length;i++){
+       a.datas.push(d[i]);      
+     }
+     // console.log(a.arr.slice(rnd,rnd+offset));
+     console.log(a.datas)
+    //}
+  }
+
+a.sel = a.arr[0].id;
+
+  
+}]);
+
+</script>
+<body ng-app="app">
+<div ng-controller="ctrl">
+	<select ng-model = "sel" ng-options="n for n in pCnt"></select>
+	<ul>
+		<li ng-repeat="data in datas">{{data.id}}</li>
+	</ul>
+</div>
+</body>
+</html>
