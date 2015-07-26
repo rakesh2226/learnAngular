@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+       <script type="text/javascript" src="angular.min.js"></script>
+
+      <script type="text/javascript">
+    var app = angular.module('Demo',[]);
+    app.controller('ctrl', ['$scope','$timeout', function(scope,timeout){
+        scope.loc = "bza";
+        timeout(function(){
+            scope.loc = "sbc";
+        },3000);
+        
+    }]);
+
+    function ctrl2(a){
+        a.locs = 'BZA'
+  console.log(ctrl2);
+}
+ctrl2.$injector = ['$scope'];
+app.controller('ctrl2', ['$scope', ctrl2]);
+
+
+   </script>
+</head>
+<body>
+<div id="payTm">
+    <div ng-controller="ctrl">
+
+    {{loc}}
+    <div ng-controller="ctrl2">{{locs}}</div>
+</div> 
+</div>
+<script type="text/javascript">
+ angular.bootstrap(document.getElementById('payTm'),['Demo']);
+</script>
+</body>
+</html>
