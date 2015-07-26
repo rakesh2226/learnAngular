@@ -1,0 +1,20 @@
+<input type="text" cols ng-model="tagses">
+<script type="text/javascript">
+
+	directive('cols',function(){
+	  return{
+	    restrict:"A",
+	    require:'ngModel',
+	    link:function(s,e,a,ctrl){
+	      console.log(ctrl);
+	    ctrl.$parsers.push(function(data){
+	      console.log(data);
+	      ctrl.$setViewValue(data.toUpperCase());
+	      ctrl.$render();
+	      return data.toUpperCase();
+	    });
+
+	    }
+	  }
+	});
+</script>

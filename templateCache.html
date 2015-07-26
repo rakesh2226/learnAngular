@@ -1,0 +1,28 @@
+<html>
+<head>
+  <title>communicating between controllers</title>
+  <style type="text/css">
+  body{font:14px verdana;text-indent: 55px}
+  </style>
+ <script type="text/javascript" src="..\Jslib/angular.min.1.4.js"></script>
+   <script type="text/ng-template" id="templatew.html">
+    <p> hello</p>
+   </script>
+ <script type="text/javascript">
+
+  var app = angular.module("app", []);
+  app.run(function($templateCache){
+  $templateCache.put("template.html","<p>hello {{name}}</p>");
+  });
+  app.controller('ctrl', ['$scope', function($scope){
+     $scope.name = "siva";
+}]);
+
+</script>
+</head>
+<body ng-app="app">
+  <div ng-controller="ctrl">{{name}}
+<span ng-include="'template.html'"></span>
+   </div>
+</body>
+</html>
