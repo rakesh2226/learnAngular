@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+.rnd{width: 50px;height: 50px;border-radius: 25px;border: 1px solid gold;margin-top: 25px;position: relative;background-color: orange}
+</style>
+ <script type="text/javascript" src="..\Jslib/angular.min.1.4.js"></script>
+
+<body>
+ 
+<div ng-app="app">
+ 
+<colors></colors>
+<colors></colors>
+<colors></colors>
+</div>
+ 
+</body>
+ 
+<script>
+var app=angular.module('app',[]);
+app.directive('colors',function(){
+ 
+return{
+	restrict:'E',
+	scope:true,
+	template:"<div class='rnd'><p style='padding-left:18px;color:white'>{{no}}</p></div>",
+	controller:function($scope,$interval){
+		$interval(function(){
+		$scope.no= Math.floor(Math.random()*10);
+	},1000);
+ 
+}
+}
+});
+</script>
+</html>

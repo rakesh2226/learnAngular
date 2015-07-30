@@ -1,0 +1,56 @@
+<html>
+<head>
+	<style type="text/css">
+.box{width: 300px;height: 20px;position: relative;display: inline-block;overflow: hidden;border: 1px solid rgb(185, 185, 185);}
+.etext{width:100%;height: 20px;position: absolute;float: right;font-size: 12px;}
+.icon-mail{margin-left:5px;color:orange;width: 300px;font-size: 15px;border: 1px solid rgb(185, 185, 185);border-radius: 2px}
+a{text-decoration: none}
+.brd{overflow: hidden;}
+.ico{font-size: 15px;color: rgb(185, 185, 185); cursor: pointer;}
+</style>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+ <script type="text/javascript">
+var app = angular.module("app",[]);
+app.controller('ctrl', ['$scope', function($scope){
+  $scope.items =[];  
+  $scope.dels = function(index){
+    $scope.items.splice(index,1);
+
+  }
+}])
+app.directive('enteremail',function(){
+  return{
+    restrict:"A",
+    require:"?ngModel",
+    link:function(s,e,a,_c,trans){
+      console.log(_c)
+      _c.$parsers.push(function(val){
+         var reg = /^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/g
+         if(reg.test(val)){
+          s.$emit('ok',val);
+          s.items.push({name:val});
+          _c.$setViewValue("");
+          _c.$render();
+         }
+      })
+
+    }
+  }
+});
+</script>
+
+</head>
+<body ng-app="app"> 
+<div class="box" ng-controller="ctrl">
+  <div class="brd"> 
+    <span class="icon-mail" ng-repeat="item in items">{{item.name}} <a class="ico" ng-click = "dels($index)">X</a></span>
+    <input type="text" class="etext" ng-model="t1" enteremail>
+  </div>
+</div>
+
+<div>
+I've support only xxxxxxx.xx   change regular expression for more support 
+mail me :: siva_sankar9@yahoo.com
+</div>
+</body>
+</html>
